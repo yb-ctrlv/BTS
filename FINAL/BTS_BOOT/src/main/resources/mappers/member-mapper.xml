@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+
+
+	<select id="login" parameterType="String" resultType="MemberDto">
+		SELECT
+		MEMBER_NO,
+		MEMBER_ID,
+		MEMBER_PW,
+		MEMBER_ENABLE,
+		MEMBER_AUTHORITY,
+		MEMBER_NICKNAME,
+		MEMBER_EMAIL,
+		MEMBER_IMAGE,
+		MEMBER_REGDATE
+		 
+		FROM BTS_MEMBER 
+		WHERE MEMBER_ID = #{username}
+	</select>
+	
+	<select id="selectList" resultType="MemberDto">
+		SELECT
+		
+		MEMBER_NO,
+		MEMBER_ID,
+		MEMBER_PW,
+		MEMBER_ENABLE,
+		MEMBER_AUTHORITY,
+		MEMBER_NICKNAME,
+		MEMBER_EMAIL,
+		MEMBER_IMAGE,
+		MEMBER_REGDATE
+		
+		FROM BTS_MEMBER 
+	</select>
+	
+	<select id="selectOne" parameterType="int" resultType="MemberDto">
+				SELECT
+		
+		MEMBER_NO,
+		MEMBER_ID,
+		MEMBER_PW
+		MEMBER_ENABLE,
+		MEMBER_AUTHORITY,
+		MEMBER_NICKNAME,
+		MEMBER_EMAIL,
+		MEMBER_IMAGE,
+		MEMBER_REGDATE
+		
+		FROM BTS_MEMBER 
+		
+		WHERE MEMBER_NO = #{member_no}
+	</select>
+	
+	<insert id="insert" parameterType="MemberDto">
+		 INSERT INTO BTS_MEMBER VALUES(
+		 MEMBER_NO_SEQ.NEXTVAL,
+		 #{member_id},
+		 #{member_pw},
+		 1,
+		 'ROLE_MEMBER',
+		 #{member_nickname},
+		 #{member_email},
+		 <choose>
+		 	<when test="member_image != null and member_image eq ''">
+		 		#{member_image},
+		 	</when>
+		 	<otherwise>
+		 		null,
+		 	</otherwise>
+		 </choose>
+		 SYSDATE
+		 )
+	</insert>
+	<update id="update" parameterType="MemberDto">
+		UPDATE BTS_MEMBER SET
+		MEMBER_PW = #{member_pw},
+		MEMBER_NICKNAME = #{member_nickname},
+		<if test="member_image != null and member_image eq ''">
+		MEMBER_IMAGE = #{member_image}
+		</if>
+		WHRER MEMBER_NO = #{member_no}
+	</update>
+	
+	<update id="delete" parameterType="int">
+		UPDATE BTS_MEMBER SET
+		MEMBER_ENABLE = 0
+		WHERE MEMBER_NO = #{member_no}
+	</update>
+	
+	<select id="memberListPaging" parameterType="map" resultType="MemberDto">
+		SELECT ROW_NUM, MEMBER_NO, MEMBER_ID, MEMBER_ENABLE, MEMBER_NICKNAME, MEMBER_EMAIL, MEMBER_REGDATE
+		FROM(SELECT ROWNUM AS ROW_NUM, MEMBER_NO, MEMBER_ID, MEMBER_ENABLE, MEMBER_NICKNAME, MEMBER_EMAIL, MEMBER_REGDATE
+		FROM(SELECT MEMBER_NO, MEMBER_ID, MEMBER_ENABLE, MEMBER_NICKNAME, MEMBER_EMAIL, MEMBER_REGDATE
+		FROM BTS_MEMBER ORDER BY MEMBER_NO DESC))
+		WHERE ROW_NUM BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="findIdCount" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM BTS_MEMBER
+		WHERE MEMBER_ID LIKE '%'||#{id}||'%'
+	</select>
+	
+	<select id="findId" parameterType="map" resultType="MemberDto">
+		SELECT ROW_NUM, MEMBER_NO, MEMBER_ID, MEMBER_ENABLE, MEMBER_NICKNAME, MEMBER_EMAIL, MEMBER_REGDATE
+		FROM(SELECT ROWNUM AS ROW_NUM, MEMBER_NO, MEMBER_ID, MEMBER_ENABLE, MEMBER_NICKNAME, MEMBER_EMAIL, MEMBER_REGDATE
+		FROM(SELECT MEMBER_NO, MEMBER_ID, MEMBER_ENABLE, MEMBER_NICKNAME, MEMBER_EMAIL, MEMBER_REGDATE
+		FROM BTS_MEMBER 
+		WHERE MEMBER_ID LIKE '%'||#{id}||'%'
+		ORDER BY MEMBER_NO DESC))
+		WHERE ROW_NUM BETWEEN #{start} AND #{end}
+	</select>
+	
+	<update id="multiEnable" parameterType="map">
+		UPDATE BTS_MEMBER SET
+		MEMBER_ENABLE = 1
+		WHERE MEMBER_NO IN
+		<foreach collection="member_no" item="member_nums" open="(" separator="," close=")">
+			#{member_nums}
+		</foreach>
+	</update>
+	
+	<update id="multiDisable" parameterType="map">
+		UPDATE BTS_MEMBER SET
+		MEMBER_ENABLE = 0
+		WHERE MEMBER_NO IN
+		<foreach collection="member_no" item="member_nums" open="(" separator="," close=")">
+			#{member_nums}
+		</foreach>
+	</update>
+
+</mapper>

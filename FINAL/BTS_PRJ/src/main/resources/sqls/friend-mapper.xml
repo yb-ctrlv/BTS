@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="friend">
+	<select id="selectList" parameterType="int" resultType="MemberDto">
+		SELECT
+		
+		MEMBER_NO,
+		MEMBER_ID,
+		MEMBER_PW,
+		MEMBER_ENABLE,
+		MEMBER_AUTHORITY,
+		MEMBER_NICKNAME,
+		MEMBER_EMAIL,
+		MEMBER_IMAGE,
+		MEMBER_REGDATE
+		 
+		FROM BTS_MEMBER
+		
+		WHERE MEMBER_NO IN (SELECT FRIEND_NO FROM BTS_FRIEND WHERE MEMBER_NO = #{member_no})
+	</select>
+	<insert id="insert" parameterType="hashMap">
+		INSERT INTO BTS_FRIEND VALUES(
+		#{member_no},
+		#{friend_no}
+		)
+	</insert>
+	<delete id="delete" parameterType="hashMap">
+		DELETE FROM BTS_FRIEND
+		WHERE MEMBER_NO = #{member_no} AND FRIEND_NO = #{friend_no}
+	</delete>
+</mapper>

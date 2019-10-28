@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="message">
+
+	<select id="selectList" parameterType="int" resultType="MessageDto">
+		SELECT 
+		MESSAGE_NO, 
+		CHATROOM_NO,
+		MEMBER_NO,
+		MESSAGE_CONTENT,
+		MESSAGE_REGDATE,
+		MEMBER_NICKNAME AS MESSAGE_SENDER
+		FROM BTS_MESSAGE JOIN BTS_MEMBER USING(member_no)
+		WHERE CHATROOM_NO = #{chatroom_no}
+		ORDER BY MESSAGE_REGDATE ASC
+	</select>
+	
+	<insert id="insert" parameterType="MessageDto">
+		<selectKey keyProperty="message_no" resultType="int" order="BEFORE">
+			SELECT MESSAGE_NO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BTS_MESSAGE VALUES(
+		#{message_no},
+		#{chatroom_no},
+		#{member_no},
+		#{message_content},
+		#{message_regdate}
+		)
+	</insert>
+	<delete id="delete" parameterType="int">
+		DELETE FROM BTS_MESSAGE
+		WHERE MESSAGE_NO = #{message_no}
+	</delete>
+</mapper>

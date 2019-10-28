@@ -1,0 +1,64 @@
+body{
+    padding-top: 10%;
+    padding-bottom: 40px;
+    background-color: #eee;
+}
+#mainContainer{
+    margin: 0 auto;
+    width: 75%;
+    background-color: white;
+}
+.input-control{
+    display: block;
+    margin: 0 auto;
+    max-width: 500px;
+    padding-bottom: 20px;
+    
+}
+.input-control label{
+    display: inline-block;
+    width: 20%;
+    text-align: right;
+}
+.input-control input[type='text'],input[type='email'], input[type='password']{
+    display: inline-block;
+    width: 50%;
+    position: static;
+}
+form{
+    display: block;
+}
+.formtitle{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 5%;
+}
+.input-control input[type='submit'], input[type='button']{
+    display: inline-block;
+    margin: 0 auto;
+}
+#idck{
+	color: blue; 
+	font-size: 8pt;
+	display: block;
+	text-align: center;
+}
+#pwck{
+	color: red; 
+	font-size: 8pt;
+	display: block;
+	text-align: center;
+}
+#emailck{
+	color: blue; 
+	font-size: 8pt;
+	display: block;
+	text-align: center;
+}
+#nickck{
+	color: blue; 
+	font-size: 8pt;
+	display: block;
+	text-align: center;
+}

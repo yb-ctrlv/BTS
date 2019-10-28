@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
+<script>
+    
+    $(function(){
+
+        var nickname = Request('nickname');
+        var room_addr = Request('room_addr');
+        var room_maxval = Request('room_maxval');
+
+        $('#nickname').val(nickname);
+        $('#room_addr').val(room_addr);
+        $('#room_maxval').val(room_maxval);
+
+        $('#joinform').submit();
+
+
+
+
+        function Request(valuename){
+            var rtnval;
+            var nowAddress = unescape(encodeURIComponent(location.href));
+            nowAddress = decodeURIComponent(nowAddress);
+            var parameters = new Array();
+            parameters = (nowAddress.slice(nowAddress.indexOf("?")+1,nowAddress.length)).split("&");
+            for(var i = 0 ; i < parameters.length ; i++){
+                if(parameters[i].split("=")[0] == valuename){
+                    rtnval = parameters[i].split("=")[1];
+                    if(rtnval == undefined || rtnval == null){
+                        rtnval = "";
+                    }
+                    return rtnval;
+                }
+            }
+        }
+
+    });
+
+
+        
+
+
+
+    
+
+
+
+</script>
+<body>
+
+    <form action="/meetingRoom/" method="POST" id="joinform">
+        <input type="hidden" id="nickname" name="nickname"/>
+        <input type="hidden" id="room_addr" name="room_addr">
+        <input type="hidden" id="room_maxval" name="room_maxval">
+    </form>
+    
+</body>
+</html>

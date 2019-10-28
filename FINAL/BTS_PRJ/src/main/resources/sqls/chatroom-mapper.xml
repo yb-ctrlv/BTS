@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatroom">
+	<insert id="insert" parameterType="ChatRoomDto">
+		<selectKey keyProperty="chatroom_no" resultType="int" >
+			SELECT CHATROOM_NO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BTS_CHATROOM VALUES(
+		#{chatroom_no},SYSDATE
+		)
+	</insert>
+	<update id="updateRegdate" parameterType="int">
+		UPDATE BTS_CHATROOM SET
+		CHATROOM_REGDATE = SYSDATE
+		WHERE CHATROOM_NO = #{chatroom_no}
+	</update>
+</mapper>

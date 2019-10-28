@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatinfo">
+
+
+	<select id="selectListToMember" resultType="ChatInfoDto">
+		SELECT CHATROOM_NO,
+		MEMBER_NO, COUNT, CHAT_TITLE
+		FROM BTS_CHATINFO
+		WHERE MEMBER_NO =
+		#{member_no}
+	</select>
+
+	<select id="selectListToChatRoom" resultType="ChatInfoDto">
+		SELECT CHATROOM_NO,
+		MEMBER_NO, COUNT
+		FROM BTS_CHATINFO
+		WHERE CHATROOM_NO = #{chatroom_no}
+	</select>
+
+	<insert id="insert" parameterType="hashMap">
+		INSERT INTO BTS_CHATINFO
+		VALUES(
+		#{chatroom_no},
+		#{member_no},
+		0
+		)
+	</insert>
+
+	<update id="updateCountUp" parameterType="hashMap">
+		UPDATE BTS_CHATINFO SET
+		COUNT = COUNT+1
+		WHERE CHATROOM_NO = #{chatroom_no} AND MEMBER_NO =
+		#{member_no}
+	</update>
+	<update id="updateCountChatroom" parameterType="int">
+		UPDATE BTS_CHATINFO SET
+		COUNT = COUNT+1
+		WHERE CHATROOM_NO = #{chatroom_no}
+	</update>
+
+	<update id="updateCountZero" parameterType="hashMap">
+		UPDATE BTS_CHATINFO
+		SET
+		COUNT = 0
+		WHERE CHATROOM_NO = #{chatroom_no} AND MEMBER_NO =
+		#{member_no}
+	</update>
+	<delete id="delete" parameterType="hashMap">
+		DELETE FROM BTS_CHATINFO
+		WHERE
+		<if test="member_no != null and member_no != 0">
+			MEMBER_NO = #{member_no} AND
+		</if>
+		CHATROOM_NO = #{chatroom_no}
+	</delete>
+
+</mapper>

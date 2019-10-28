@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="room">
+
+	<select id="roomList" resultType="RoomDto">
+		SELECT ROOM_NO, ROOM_MASTER, ROOM_NAME, ROOM_PASSWORD, ROOM_NOWVAL, ROOM_MAXVAL, ROOM_REGDATE, ROOM_ADDR, ROOM_IMAGE
+		FROM BTS_ROOM
+		ORDER BY ROOM_NO DESC
+	</select>
+	
+	<select id="checkRoom" parameterType="int" resultType="RoomDto">
+		SELECT ROOM_NO, ROOM_MASTER, ROOM_NAME, ROOM_PASSWORD, ROOM_NOWVAL, ROOM_MAXVAL, ROOM_REGDATE, ROOM_ADDR, ROOM_IMAGE
+		FROM BTS_ROOM
+		WHERE ROOM_NO = #{room_no}
+	</select>
+	
+	<insert id="makeRoom" parameterType="RoomDto">
+		INSERT INTO BTS_ROOM VALUES(
+		ROOM_NO_SEQ.NEXTVAL,
+		#{room_master},
+		#{room_name},
+		<choose>
+		 	<when test="room_password != null">
+		 		#{room_password},
+		 	</when>
+		 	<otherwise>
+		 		null,
+		 	</otherwise>
+		 </choose>
+		1,
+		#{room_maxval},
+		SYSDATE,
+		#{room_addr},
+		#{room_image}
+		)
+	</insert>
+	
+	<update id="updateRoom" parameterType="int">
+		UPDATE BTS_ROOM SET
+		ROOM_NOWVAL = ROOM_NOWVAL + 1
+		WHERE ROOM_NO = #{room_no}
+	</update>
+	
+	<update id="outRoom" parameterType="String">
+		UPDATE BTS_ROOM SET
+		ROOM_NOWVAL = ROOM_NOWVAL - 1
+		WHERE ROOM_ADDR = #{room_addr}
+	</update>
+	
+	<select id="checkRoomVal" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM BTS_ROOM
+		WHERE ROOM_NOWVAL = 0
+		AND ROOM_ADDR = #{room_addr}
+	</select>
+	
+	<delete id="deleteRoom" parameterType="String">
+		DELETE FROM BTS_ROOM
+		WHERE ROOM_ADDR = #{room_addr}
+	</delete>
+	
+
+</mapper>

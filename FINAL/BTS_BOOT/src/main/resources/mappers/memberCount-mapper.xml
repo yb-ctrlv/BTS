@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberCount">
+
+	<select id="previousReg" resultType="int">
+		SELECT COUNT(*) FROM BTS_MEMBER
+		WHERE TO_CHAR(MEMBER_REGDATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE-1, 'YYYY-MM-DD')
+	</select>
+	
+	<select id="todayReg" resultType="int">
+		SELECT COUNT(*) FROM BTS_MEMBER
+		WHERE TO_CHAR(MEMBER_REGDATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<select id="weeklyReg" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM BTS_MEMBER
+		WHERE TO_CHAR(MEMBER_REGDATE, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{sunday}
+		AND TO_CHAR(MEMBER_REGDATE, 'YYYY-MM-DD') <![CDATA[ <= ]]> #{saturday}
+	</select>
+	
+	<select id="monthlyReg" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM BTS_MEMBER
+		WHERE TO_CHAR(MEMBER_REGDATE, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{startDate}
+		AND TO_CHAR(MEMBER_REGDATE, 'YYYY-MM-DD') <![CDATA[ <= ]]> #{endDate}
+	</select>
+	
+	<select id="totalReg" resultType="int">
+		SELECT COUNT(*) FROM BTS_MEMBER
+	</select>
+
+</mapper>

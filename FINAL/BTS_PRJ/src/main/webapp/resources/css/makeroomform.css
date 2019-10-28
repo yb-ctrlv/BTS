@@ -1,0 +1,33 @@
+.body{
+	text-align: center;
+}
+
+.container{
+	width: 20%;
+}
+
+label {
+	font-size: 14pt;
+}
+
+h1{
+	text-align: center;
+}
+
+.arrowImg{
+	width: 30px;
+}
+
+#gallery{
+	width: 200px;
+	height: 200px;
+}
+
+#btnDiv{
+	margin-top: 10%;	
+}
+
+#btnDiv input{
+	width: 45%;
+	text-align: center;
+}
